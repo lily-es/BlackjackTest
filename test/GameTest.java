@@ -26,7 +26,13 @@ class GameTest {
         Game.Players expectedWinner = Game.Players.sam;
 
         game.setDeck(Arrays.asList(deck));
-        game.playGame();
+
+        try {
+            game.playGame();
+        } catch (InvalidDeckException e) {
+            e.printStackTrace();
+            fail();
+        }
 
         assertEquals(expectedWinner, game.winner);
         assertArrayEquals(samExpected, game.samCards.toArray());
@@ -41,7 +47,12 @@ class GameTest {
         expectedWinner = Game.Players.sam;
 
         game.setDeck(Arrays.asList(deck));
-        game.playGame();
+        try {
+            game.playGame();
+        } catch (InvalidDeckException e) {
+            e.printStackTrace();
+            fail();
+        }
 
         assertEquals(expectedWinner, game.winner);
         assertArrayEquals(samExpected, game.samCards.toArray());
@@ -55,7 +66,12 @@ class GameTest {
         expectedWinner = Game.Players.dealer;
 
         game.setDeck(Arrays.asList(deck));
-        game.playGame();
+        try {
+            game.playGame();
+        } catch (InvalidDeckException e) {
+            e.printStackTrace();
+            fail();
+        }
 
         assertEquals(expectedWinner, game.winner);
         assertArrayEquals(samExpected, game.samCards.toArray());
@@ -69,10 +85,59 @@ class GameTest {
         expectedWinner = Game.Players.sam;
 
         game.setDeck(Arrays.asList(deck));
-        game.playGame();
+        try {
+            game.playGame();
+        } catch (InvalidDeckException e) {
+            e.printStackTrace();
+            fail();
+        }
 
         assertEquals(expectedWinner, game.winner);
         assertArrayEquals(samExpected, game.samCards.toArray());
         assertArrayEquals(dealerExpected, game.dealerCards.toArray());
+
+        //Only 4 cards, dealer has bigger score
+        game.reset();
+        deck = new String[]{"C5", "D10", "H6", "S10"};
+        samExpected = new String[]{"C5", "H6"};
+        dealerExpected = new String[]{"D10", "S10"};
+        expectedWinner = Game.Players.dealer;
+
+        game.setDeck(Arrays.asList(deck));
+        try {
+            game.playGame();
+        } catch (InvalidDeckException e) {
+            e.printStackTrace();
+            fail();
+        }
+
+        assertEquals(expectedWinner, game.winner);
+        assertArrayEquals(samExpected, game.samCards.toArray());
+        assertArrayEquals(dealerExpected, game.dealerCards.toArray());
+
+        //Only 4 cards, players tie
+        game.reset();
+        deck = new String[]{"C10", "D10", "H10", "S10"};
+        samExpected = new String[]{"C10", "H10"};
+        dealerExpected = new String[]{"D10", "S10"};
+
+        game.setDeck(Arrays.asList(deck));
+        try {
+            game.playGame();
+        } catch (InvalidDeckException e) {
+            e.printStackTrace();
+            fail();
+        }
+
+        assertNull(game.winner);
+        assertArrayEquals(samExpected, game.samCards.toArray());
+        assertArrayEquals(dealerExpected, game.dealerCards.toArray());
+
+        //not enough cards
+        game.reset();
+        deck = new String[]{"C10", "D10"};
+
+        game.setDeck(Arrays.asList(deck));
+        assertThrows(InvalidDeckException.class, game::playGame);
     }
 }

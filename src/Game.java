@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -42,7 +43,11 @@ public class Game {
         if (args.length == 0) {
             //if no deck provided, start with default deck and shuffle it
             game.setDeck(shuffleDeck(startingDeck.clone()));
-            game.playGame();
+            try {
+                game.playGame();
+            } catch (InvalidDeckException e) {
+                e.printStackTrace();
+            }
         } else {
             try {
                 //read deck from file, and start game with it
@@ -50,8 +55,7 @@ public class Game {
                 String[] deck = reader.readDeck();
                 game.setDeck(Arrays.asList(deck));
                 game.playGame();
-            } catch (Exception e) {
-                //in case of IOException and InvalidDeckException
+            } catch (IOException|InvalidDeckException e) {
                 System.out.println(e.getMessage());
                 System.exit(1);
             }
@@ -62,10 +66,9 @@ public class Game {
     /**
      * Simulates Blackjack game according to the rules set out by the test
      */
-    void playGame() {
+    void playGame() throws InvalidDeckException {
         if (deck.size() < 4) {
-            System.out.println("Not enough cards to start the game (need at least 4)");
-            return;
+            throw new InvalidDeckException("Not enough cards to start the game (need at least 4)");
         }
         for (int i = 0; i < 2; i++) {
             pullCard(Players.sam);
