@@ -48,7 +48,7 @@ public class Game {
             try {
                 game.playGame();
             } catch (InvalidDeckException e) {
-                e.printStackTrace();
+                System.out.println(e.getClass().getCanonicalName() + ": " + e.getMessage());
             }
         } else {
             try {
@@ -58,7 +58,7 @@ public class Game {
                 game.setDeck(Arrays.asList(deck));
                 game.playGame();
             } catch (IOException|InvalidDeckException e) {
-                e.printStackTrace();
+                System.out.println(e.getClass().getCanonicalName() + ": " + e.getMessage());
                 System.exit(1);
             }
         }
