@@ -58,7 +58,7 @@ public class Game {
                 game.setDeck(Arrays.asList(deck));
                 game.playGame();
             } catch (IOException|InvalidDeckException e) {
-                System.out.println(e.getMessage());
+                e.printStackTrace();
                 System.exit(1);
             }
         }
