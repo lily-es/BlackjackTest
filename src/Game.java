@@ -117,6 +117,9 @@ public class Game {
         if (dealerScore > samScore) {
             winner = Players.dealer;
             return;
+        } else if(samScore > dealerScore){
+            winner = Players.sam;
+            return;
         }
     }
 
@@ -124,7 +127,9 @@ public class Game {
      * Prints the result of the game
      */
     private void printResult() {
-        System.out.println(winner);
+        if(winner==null){
+            System.out.println("tie");
+        } else System.out.println(winner);
         //easiest way to remove brackets while using toString
         System.out.println("sam: "+samCards.toString().replace("[","").replace("]",""));
         System.out.println("dealer: "+dealerCards.toString().replace("[","").replace("]",""));

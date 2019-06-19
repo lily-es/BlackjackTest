@@ -60,5 +60,19 @@ class GameTest {
         assertEquals(expectedWinner, game.winner);
         assertArrayEquals(samExpected, game.samCards.toArray());
         assertArrayEquals(dealerExpected, game.dealerCards.toArray());
+
+        //Only 4 cards, sam has bigger score
+        game.reset();
+        deck = new String[]{"C10", "D5", "H10", "S6"};
+        samExpected = new String[]{"C10", "H10"};
+        dealerExpected = new String[]{"D5", "S6"};
+        expectedWinner = Game.Players.sam;
+
+        game.setDeck(Arrays.asList(deck));
+        game.playGame();
+
+        assertEquals(expectedWinner, game.winner);
+        assertArrayEquals(samExpected, game.samCards.toArray());
+        assertArrayEquals(dealerExpected, game.dealerCards.toArray());
     }
 }
